@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102a21" />
+    <meta
+      name="description"
+      content="Portal administrativo Techá para gestão de acessos, planos e auditoria."
+    />
+    <title>Techá Admin</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main id="login-view" class="login-shell">
+      <section class="login-card" aria-labelledby="login-title">
+        <div class="brand-mark" aria-hidden="true">T</div>
+        <p class="eyebrow">InnovAgro · Operações</p>
+        <h1 id="login-title">Techá Admin</h1>
+        <p class="muted">
+          Gestão segura de usuários, planos, acessos e auditoria.
+        </p>
+
+        <form id="login-form" class="stack">
+          <label>
+            Usuário ou e-mail
+            <input
+              id="login-email"
+              name="email"
+              autocomplete="username"
+              placeholder="admin"
+              required
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+          <button id="login-submit" class="button button-primary" type="submit">
+            Entrar no portal
+          </button>
+          <p id="login-error" class="form-error" role="alert"></p>
+        </form>
+
+        <p class="security-note">
+          A sessão é encerrada ao fechar o navegador. A senha inicial deve ser
+          alterada no primeiro acesso.
+        </p>
+      </section>
+    </main>
+
+    <div id="app-view" class="app-shell" hidden>
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-mark brand-mark-small" aria-hidden="true">T</div>
+          <div>
+            <strong>Techá</strong>
+            <span>Admin</span>
+          </div>
+        </div>
+
+        <nav aria-label="Navegação administrativa">
+          <button class="nav-item active" data-view="dashboard">
+            <span aria-hidden="true">⌂</span> Visão geral
+          </button>
+          <button class="nav-item" data-view="users">
+            <span aria-hidden="true">◎</span> Usuários e planos
+          </button>
+          <button class="nav-item" data-view="audit">
+            <span aria-hidden="true">≡</span> Auditoria
+          </button>
+          <button class="nav-item" data-view="account">
+            <span aria-hidden="true">⚙</span> Minha conta
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="admin-identity">
+            <strong id="sidebar-admin-name">Administrador</strong>
+            <span id="sidebar-admin-email"></span>
+          </div>
+          <button id="logout-button" class="button button-ghost" type="button">
+            Sair
+          </button>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Ambiente de produção</p>
+            <h1 id="page-title">Visão geral</h1>
+          </div>
+          <div class="topbar-actions">
+            <span id="api-status" class="status-pill status-loading">
+              Verificando API
+            </span>
+            <button id="refresh-button" class="button button-secondary" type="button">
+              Atualizar
+            </button>
+          </div>
+        </header>
+
+        <section id="dashboard-panel" class="panel-view">
+          <div id="stats-grid" class="stats-grid" aria-live="polite">
+            <article class="stat-card">
+              <span>Usuários</span>
+              <strong id="stat-users">—</strong>
+              <small id="stat-users-detail">Carregando</small>
+            </article>
+            <article class="stat-card">
+              <span>Fazendas</span>
+              <strong id="stat-farms">—</strong>
+              <small>Contas cadastradas</small>
+            </article>
+            <article class="stat-card">
+              <span>Talhões</span>
+              <strong id="stat-fields">—</strong>
+              <small>Áreas monitoradas</small>
+            </article>
+            <article class="stat-card">
+              <span>Análises</span>
+              <strong id="stat-analyses">—</strong>
+              <small>Processamentos NDVI</small>
+            </article>
+            <article class="stat-card stat-card-alert">
+              <span>Anomalias ativas</span>
+              <strong id="stat-anomalies">—</strong>
+              <small id="stat-anomalies-detail">Alertas em aberto</small>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <article class="surface">
+              <div class="surface-header">
+                <div>
+                  <p class="eyebrow">Distribuição</p>
+                  <h2>Planos ativos</h2>
+                </div>
+              </div>
+              <div id="plan-distribution" class="plan-distribution"></div>
+            </article>
+
+            <article class="surface">
+              <div class="surface-header">
+                <div>
+                  <p class="eyebrow">Atividade recente</p>
+                  <h2>Últimas ações</h2>
+                </div>
+                <button class="link-button" data-view-link="audit" type="button">
+                  Ver todas
+                </button>
+              </div>
+              <div id="recent-audit" class="activity-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="users-panel" class="panel-view" hidden>
+          <article class="surface">
+            <div class="surface-header surface-header-wrap">
+              <div>
+                <p class="eyebrow">Controle de acesso</p>
+                <h2>Usuários cadastrados</h2>
+              </div>
+              <label class="search-field">
+                <span class="sr-only">Buscar usuário</span>
+                <input
+                  id="user-search"
+                  type="search"
+                  placeholder="Buscar nome ou e-mail"
+                />
+              </label>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Usuário</th>
+                    <th>Plano</th>
+                    <th>Acesso</th>
+                    <th>Estrutura</th>
+                    <th>Último acesso</th>
+                    <th class="align-right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="users-table-body"></tbody>
+              </table>
+            </div>
+            <p id="users-empty" class="empty-state" hidden>
+              Nenhum usuário encontrado.
+            </p>
+          </article>
+        </section>
+
+        <section id="audit-panel" class="panel-view" hidden>
+          <article class="surface">
+            <div class="surface-header surface-header-wrap">
+              <div>
+                <p class="eyebrow">Rastreabilidade</p>
+                <h2>Trilha de auditoria</h2>
+              </div>
+              <select id="audit-filter" aria-label="Filtrar ações">
+                <option value="">Todas as ações</option>
+                <option value="admin.login">Login administrativo</option>
+                <option value="admin.password_changed">Troca de senha</option>
+                <option value="user.plan_changed">Alteração de plano</option>
+                <option value="user.access_changed">Alteração de acesso</option>
+                <option value="user.password_reset">Redefinição de senha</option>
+                <option value="admin.bootstrap_created">Criação do admin</option>
+              </select>
+            </div>
+            <div id="audit-list" class="audit-list"></div>
+            <p id="audit-empty" class="empty-state" hidden>
+              Nenhum evento administrativo registrado.
+            </p>
+          </article>
+        </section>
+
+        <section id="account-panel" class="panel-view" hidden>
+          <div class="content-grid">
+            <article class="surface">
+              <p class="eyebrow">Perfil administrativo</p>
+              <h2 id="account-name">Administrador</h2>
+              <dl class="details-list">
+                <div>
+                  <dt>E-mail</dt>
+                  <dd id="account-email">—</dd>
+                </div>
+                <div>
+                  <dt>Perfil</dt>
+                  <dd><span class="badge badge-admin">Admin</span></dd>
+                </div>
+                <div>
+                  <dt>Último acesso</dt>
+                  <dd id="account-last-login">—</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="surface">
+              <p class="eyebrow">Segurança</p>
+              <h2>Alterar senha</h2>
+              <form id="password-form" class="stack compact-form">
+                <label>
+                  Senha atual
+                  <input
+                    id="current-password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                  />
+                </label>
+                <label>
+                  Nova senha
+                  <input
+                    id="new-password"
+                    type="password"
+                    autocomplete="new-password"
+                    minlength="12"
+                    required
+                  />
+                </label>
+                <label>
+                  Confirmar nova senha
+                  <input
+                    id="confirm-password"
+                    type="password"
+                    autocomplete="new-password"
+                    minlength="12"
+                    required
+                  />
+                </label>
+                <button class="button button-primary" type="submit">
+                  Salvar nova senha
+                </button>
+                <p id="password-error" class="form-error" role="alert"></p>
+              </form>
+            </article>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <dialog id="force-password-dialog">
+      <form id="force-password-form" class="dialog-card">
+        <p class="eyebrow">Primeiro acesso</p>
+        <h2>Crie sua senha definitiva</h2>
+        <p class="muted">
+          Por segurança, a senha temporária não pode continuar ativa.
+        </p>
+        <label>
+          Senha temporária
+          <input
+            id="force-current-password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+        <label>
+          Nova senha
+          <input
+            id="force-new-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="12"
+            required
+          />
+        </label>
+        <label>
+          Confirmar nova senha
+          <input
+            id="force-confirm-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="12"
+            required
+          />
+        </label>
+        <button class="button button-primary" type="submit">
+          Alterar e continuar
+        </button>
+        <p id="force-password-error" class="form-error" role="alert"></p>
+      </form>
+    </dialog>
+
+    <dialog id="temporary-password-dialog">
+      <div class="dialog-card">
+        <p class="eyebrow">Senha redefinida</p>
+        <h2>Copie a senha temporária</h2>
+        <p id="temporary-password-user" class="muted"></p>
+        <label>
+          Senha temporária
+          <div class="copy-field">
+            <input
+              id="temporary-password-value"
+              type="text"
+              readonly
+              autocomplete="off"
+            />
+            <button
+              id="copy-temporary-password"
+              class="button button-secondary"
+              type="button"
+            >
+              Copiar
+            </button>
+          </div>
+        </label>
+        <p class="security-note">
+          Esta senha será exibida somente agora. O usuário poderá criar uma
+          senha definitiva pelo fluxo “Esqueci minha senha”.
+        </p>
+        <button
+          id="close-temporary-password"
+          class="button button-primary"
+          type="button"
+        >
+          Entendi
+        </button>
+      </div>
+    </dialog>
+
+    <div id="toast-region" class="toast-region" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

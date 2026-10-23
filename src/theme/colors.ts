@@ -1,0 +1,46 @@
+// src/theme/colors.ts
+export const lightColors = {
+  background: '#F9FAFB',
+  card: '#FFFFFF',
+  cardBorder: '#E5E7EB',
+  text: '#1A202C',
+  textSecondary: '#6B7280',
+  textMuted: '#9CA3AF',
+  primary: '#16A34A',
+  primaryDark: '#1a4731',
+  primaryLight: '#F0FDF4',
+  danger: '#EF4444',
+  dangerLight: '#FEE2E2',
+  amber: '#F59E0B',
+  headerBg: '#1a4731',
+  headerText: '#FFFFFF',
+  inputBg: '#F9FAFB',
+  inputBorder: '#E5E7EB',
+  separator: '#E5E7EB',
+  tabBarBg: '#FFFFFF',
+  badge: '#F3F4F6',
+};
+
+export const darkColors = {
+  background: '#0F1A13',
+  card: '#1C2B20',
+  cardBorder: '#2D3F33',
+  text: '#F1F5F2',
+  textSecondary: '#9CA3AF',
+  textMuted: '#6B7280',
+  primary: '#22C55E',
+  primaryDark: '#166534',
+  primaryLight: '#14532D',
+  danger: '#F87171',
+  dangerLight: '#450A0A',
+  amber: '#FCD34D',
+  headerBg: '#0F1A13',
+  headerText: '#F1F5F2',
+  inputBg: '#1C2B20',
+  inputBorder: '#2D3F33',
+  separator: '#2D3F33',
+  tabBarBg: '#1C2B20',
+  badge: '#2D3F33',
+};
+
+export type AppColors = typeof lightColors;

@@ -1,0 +1,8 @@
+backend/
+.env
+.env.*
+.expo/
+.expo-validation/
+builds/
+dist/
+node_modules/

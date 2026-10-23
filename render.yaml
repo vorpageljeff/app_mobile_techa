@@ -1,0 +1,54 @@
+services:
+  - type: web
+    name: techa-backend-prod
+    runtime: docker
+    plan: starter
+    branch: main
+    rootDir: backend
+    dockerfilePath: ./backend/docker/Dockerfile
+    dockerContext: ./backend
+    dockerCommand: sh -c "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+    preDeployCommand: alembic upgrade head
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: ENABLE_PIPELINE
+        value: true
+      - key: TILES_STORAGE_PATH
+        value: /data/tiles
+      - key: RASTER_STORAGE_PATH
+        value: /data/rasters
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: techa-backend-prod-db
+          property: connectionString
+      - key: COPERNICUS_CLIENT_ID
+        value: ""
+      - key: COPERNICUS_CLIENT_SECRET
+        sync: false
+      - key: COPERNICUS_USER
+        sync: false
+      - key: COPERNICUS_PASSWORD
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: FIREBASE_CREDENTIALS_BASE64
+        sync: false
+    disk:
+      name: techa-backend-prod-data
+      mountPath: /data
+      sizeGB: 10
+
+databases:
+  - name: techa-backend-prod-db
+    plan: basic-256mb
+    databaseName: techa_prod
+    user: techa_prod_user

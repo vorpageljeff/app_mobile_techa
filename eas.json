@@ -1,0 +1,61 @@
+{
+  "cli": {
+    "version": ">= 18.4.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://techa-api.2.25.189.129.nip.io/api/v1"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "ios-simulator": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://techa-api.2.25.189.129.nip.io/api/v1"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "ios-device": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://techa-api.2.25.189.129.nip.io/api/v1"
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "ios-production": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://techa-api.2.25.189.129.nip.io/api/v1"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    },
+    "play-internal": {
+      "extends": "preview",
+      "distribution": "store",
+      "environment": "preview",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {},
+    "ios-production": {}
+  }
+}

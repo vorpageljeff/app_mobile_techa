@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: techa-backend-test
+    runtime: docker
+    plan: starter
+    branch: develop
+    rootDir: backend
+    dockerfilePath: ./backend/docker/Dockerfile
+    dockerContext: ./backend
+    dockerCommand: sh -c "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+    preDeployCommand: alembic upgrade head
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: APP_ENV
+        value: test
+      - key: APP_DEBUG
+        value: false
+      - key: ENABLE_PIPELINE
+        value: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: techa-backend-test-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: techa-backend-test-redis
+          type: keyvalue
+          property: connectionString
+      - key: COPERNICUS_CLIENT_ID
+        value: ""
+      - key: COPERNICUS_CLIENT_SECRET
+        sync: false
+      - key: COPERNICUS_USER
+        sync: false
+      - key: COPERNICUS_PASSWORD
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: FIREBASE_CREDENTIALS_BASE64
+        sync: false
+    disk:
+      name: techa-backend-test-data
+      mountPath: /data
+      sizeGB: 10
+
+  - type: keyvalue
+    name: techa-backend-test-redis
+    plan: starter
+    ipAllowList: []
+    maxmemoryPolicy: allkeys-lru
+
+databases:
+  - name: techa-backend-test-db
+    plan: basic-256mb
+    databaseName: techa_test
+    user: techa_test_user

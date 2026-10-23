@@ -1,0 +1,16 @@
+{
+  "data": "2026-10-23",
+  "origem": "Projeto_techa/techa-mobile-recuperado",
+  "arquivos_incluidos": 98,
+  "exclusoes": [
+    {
+      "path": ".coverage",
+      "reason": "local configuration"
+    },
+    {
+      "path": ".npmrc",
+      "reason": "local configuration"
+    }
+  ],
+  "nota": "Publicação de acervo. Credenciais, dados operacionais, sessões e backups não foram incluídos. Não é release de produção."
+}

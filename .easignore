@@ -1,0 +1,17 @@
+node_modules/
+.expo/
+.git/
+.codex-logs/
+.codex-render-backend/
+backend/tmp/
+builds/
+*.apk
+*.log
+.env
+.env.local
+.env.*.local
+
+dist/
+dist-native/
+.coverage
+coverage/

@@ -1,0 +1,16 @@
+name: Render health check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: Check Render health
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Wake API
+        env:
+          HEALTH_URL: https://techa-backend.onrender.com/health
+        run: |
+          curl --fail --silent --show-error --max-time 60 --retry 2 --retry-delay 10 "$HEALTH_URL"

@@ -1,0 +1,44 @@
+name: Branch flow
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    branches:
+      - develop
+      - test
+      - main
+
+jobs:
+  validate-flow:
+    name: Validate branch flow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check allowed promotion path
+        shell: bash
+        run: |
+          base="${{ github.base_ref }}"
+          head="${{ github.head_ref }}"
+
+          echo "Base branch: ${base}"
+          echo "Head branch: ${head}"
+
+          case "${base}" in
+            develop)
+              if [[ "${head}" =~ ^(feature|fix|chore|refactor|docs|test|hotfix)/ ]]; then
+                exit 0
+              fi
+              ;;
+            test)
+              if [[ "${head}" == "develop" || "${head}" =~ ^release/ ]]; then
+                exit 0
+              fi
+              ;;
+            main)
+              if [[ "${head}" == "test" || "${head}" =~ ^hotfix/ ]]; then
+                exit 0
+              fi
+              ;;
+          esac
+
+          echo "::error::Fluxo invalido. Use feature/* -> develop -> test -> main."
+          exit 1

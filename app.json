@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Techá",
+    "slug": "techa",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "techa",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1a4731"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.innovagropy.techa",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "O Techá usa sua localização para guiar você até as anomalias detectadas na lavoura.",
+        "NSLocationAlwaysUsageDescription": "O Techá usa sua localização em segundo plano para sincronizar dados quando você retorna ao sinal.",
+        "NSCameraUsageDescription": "O Techá usa a câmera para registrar fotos das anomalias encontradas no campo."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1a4731"
+      },
+      "package": "com.innovagropy.techa",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      "expo-camera",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#1A4731",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Techá — #{unread_notifications} alertas"
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5cf0726c-d240-452c-a59c-bebdcc724007"
+      }
+    },
+    "owner": "jefferagroinova"
+  }
+}
